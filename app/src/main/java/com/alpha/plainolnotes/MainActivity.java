@@ -1,11 +1,17 @@
 package com.alpha.plainolnotes;
 
+import android.annotation.TargetApi;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CursorAdapter;
+import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 
 import com.alpha.plainolnotes.db.DBOpenHelper;
 import com.alpha.plainolnotes.db.NotesProvider;
@@ -14,12 +20,22 @@ import com.alpha.plainolnotes.utils.QLog;
 
 public class MainActivity extends ActionBarActivity {
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         insertNote("Sample note");
+
+        Cursor cursor = getContentResolver().query(NotesProvider.URI,DBOpenHelper.ALL_COLUMNS,null,null,null,null);
+        //Columns to be displayed in UI
+        String[] from = {DBOpenHelper.NOTE_TEXT};
+        //ids of ui elements in which data is mapped
+        int[] to = {android.R.id.text1};
+        CursorAdapter cursorAdapter = new SimpleCursorAdapter(this,android.R.layout.simple_list_item_1,cursor,from,to,0);
+        ListView listView = (ListView) findViewById(android.R.id.list);
+        listView.setAdapter(cursorAdapter);
     }
 
     private void insertNote(String noteText){
