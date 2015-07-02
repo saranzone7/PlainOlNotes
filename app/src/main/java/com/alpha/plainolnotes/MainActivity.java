@@ -42,6 +42,8 @@ implements LoaderManager.LoaderCallbacks<Cursor>
         mCursorAdapter = new SimpleCursorAdapter(this,android.R.layout.simple_list_item_1,cursor,from,to,0);
         ListView listView = (ListView) findViewById(android.R.id.list);
         listView.setAdapter(mCursorAdapter);
+
+        getLoaderManager().initLoader(0,null,this);
     }
 
     private void insertNote(String noteText){
