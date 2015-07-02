@@ -1,9 +1,15 @@
 package com.alpha.plainolnotes;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.alpha.plainolnotes.db.DBOpenHelper;
+import com.alpha.plainolnotes.db.NotesProvider;
+import com.alpha.plainolnotes.utils.QLog;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -12,6 +18,18 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        insertNote("Sample note");
+    }
+
+    private void insertNote(String noteText){
+        ContentValues values = new ContentValues();
+        values.put(DBOpenHelper.NOTE_TEXT,noteText);
+
+        //getContentResolver() is like getResources
+        //specify the path of the provider
+        Uri noteUri = getContentResolver().insert(NotesProvider.URI, values);
+        QLog.d("Inserted note "+noteUri.getLastPathSegment());
     }
 
     @Override
