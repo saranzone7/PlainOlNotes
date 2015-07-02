@@ -28,7 +28,7 @@ public class DBOpenHelper extends SQLiteOpenHelper{
     private static final String DROP_TABLE = "DROP TABLE IF EXISTS "+
             TABLE_NOTES;
 
-    public DBOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public DBOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
