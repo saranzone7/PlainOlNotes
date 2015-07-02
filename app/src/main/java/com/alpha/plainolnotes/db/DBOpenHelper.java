@@ -23,7 +23,7 @@ public class DBOpenHelper extends SQLiteOpenHelper{
     private static final String TABLE_CREATE =
             "CREATE TABLE "+TABLE_NOTES+" ( "+
                     NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    NOTE_TEXT + " TEXT " +
+                    NOTE_TEXT + " TEXT, " +
                     NOTE_CREATED + " TEXT default CURRENT_TIMESTAMP " +
                     ");";
 
