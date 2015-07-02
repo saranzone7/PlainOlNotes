@@ -1,7 +1,10 @@
 package com.alpha.plainolnotes;
 
 import android.annotation.TargetApi;
+import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.CursorLoader;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
@@ -18,7 +21,10 @@ import com.alpha.plainolnotes.db.NotesProvider;
 import com.alpha.plainolnotes.utils.QLog;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity
+implements LoaderManager.LoaderCallbacks<Cursor>
+{
+    CursorAdapter mCursorAdapter;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -33,9 +39,9 @@ public class MainActivity extends ActionBarActivity {
         String[] from = {DBOpenHelper.NOTE_TEXT};
         //ids of ui elements in which data is mapped
         int[] to = {android.R.id.text1};
-        CursorAdapter cursorAdapter = new SimpleCursorAdapter(this,android.R.layout.simple_list_item_1,cursor,from,to,0);
+        mCursorAdapter = new SimpleCursorAdapter(this,android.R.layout.simple_list_item_1,cursor,from,to,0);
         ListView listView = (ListView) findViewById(android.R.id.list);
-        listView.setAdapter(cursorAdapter);
+        listView.setAdapter(mCursorAdapter);
     }
 
     private void insertNote(String noteText){
@@ -68,5 +74,24 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        QLog.d("In MainActivity: onCreateLoader");
+        //called when data is needed
+        return new CursorLoader(this,NotesProvider.URI,null,null,null,null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        QLog.d("In MainActivity: onLoadFinished");
+        mCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        QLog.d("In MainActivity: onLoaderReset");
+        mCursorAdapter.swapCursor(null);
     }
 }
