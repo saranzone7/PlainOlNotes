@@ -14,7 +14,7 @@ public class NotesProvider extends ContentProvider{
 
     private static final String AUTHORITY = "com.alpha.plainolnotes.notesprovider"; //id of provider ->unique
     private static final String BASE_PATH = "notes"; //dataset
-    private static final Uri URI = Uri.parse("content://"+AUTHORITY+"/"+BASE_PATH);
+    public static final Uri URI = Uri.parse("content://"+AUTHORITY+"/"+BASE_PATH);
 
     //To identify operations
     private static final int NOTES = 1;
@@ -28,18 +28,18 @@ public class NotesProvider extends ContentProvider{
         uriMATCHER.addURI(AUTHORITY,BASE_PATH,NOTES);
         uriMATCHER.addURI(AUTHORITY,BASE_PATH+"/#",NOTES_ID);
     }
-    SQLiteDatabase db;
+    SQLiteDatabase mDb;
 
     @Override
     public boolean onCreate() {
         DBOpenHelper helper = new DBOpenHelper(getContext());
-        db = helper.getWritableDatabase();
+        mDb = helper.getWritableDatabase();
         return true;
     }
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+        return mDb.query(DBOpenHelper.TABLE_NOTES,DBOpenHelper.ALL_COLUMNS,selection,null,null,null,DBOpenHelper.NOTE_CREATED+" DESC");
     }
 
     @Override
@@ -49,16 +49,19 @@ public class NotesProvider extends ContentProvider{
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        //This method must return a URI which should match format BASE_PATH/id
+        long id = mDb.insert(DBOpenHelper.TABLE_NOTES,null,values);
+        return Uri.parse(BASE_PATH+"/"+id);
     }
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        //return no of rows deleted
+        return mDb.delete(DBOpenHelper.TABLE_NOTES,selection,selectionArgs);
     }
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        return mDb.update(DBOpenHelper.TABLE_NOTES,values,selection,selectionArgs);
     }
 }
