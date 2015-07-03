@@ -14,9 +14,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
+import com.alpha.plainolnotes.adapter.NotesCursorAdapter;
 import com.alpha.plainolnotes.db.DBOpenHelper;
 import com.alpha.plainolnotes.db.NotesProvider;
 import com.alpha.plainolnotes.utils.QLog;
@@ -32,14 +32,9 @@ implements LoaderManager.LoaderCallbacks<Cursor>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        Cursor cursor = getContentResolver().query(NotesProvider.URI,DBOpenHelper.ALL_COLUMNS,null,null,null,null);
-        //Columns to be displayed in UI
-        String[] from = {DBOpenHelper.NOTE_TEXT};
-        //ids of ui elements in which data is mapped
-        int[] to = {android.R.id.text1};
-        mCursorAdapter = new SimpleCursorAdapter(this,android.R.layout.simple_list_item_1,cursor,from,to,0);
+        
         ListView listView = (ListView) findViewById(android.R.id.list);
+        mCursorAdapter = new NotesCursorAdapter(this,null,0);
         listView.setAdapter(mCursorAdapter);
 
         getLoaderManager().initLoader(0,null,this);
