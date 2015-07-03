@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import com.alpha.plainolnotes.db.DBOpenHelper;
 import com.alpha.plainolnotes.db.NotesProvider;
@@ -31,8 +32,6 @@ implements LoaderManager.LoaderCallbacks<Cursor>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        insertNote("Sample note");
 
         Cursor cursor = getContentResolver().query(NotesProvider.URI,DBOpenHelper.ALL_COLUMNS,null,null,null,null);
         //Columns to be displayed in UI
@@ -53,7 +52,7 @@ implements LoaderManager.LoaderCallbacks<Cursor>
         //getContentResolver() is like getResources
         //specify the path of the provider
         Uri noteUri = getContentResolver().insert(NotesProvider.URI, values);
-        QLog.d("Inserted note "+noteUri.getLastPathSegment());
+        QLog.d("Inserted note " + noteUri.getLastPathSegment());
     }
 
     @Override
@@ -65,17 +64,35 @@ implements LoaderManager.LoaderCallbacks<Cursor>
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        switch (id){
+            case R.id.action_create_sample:
+                insertSampleData();
+                break;
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            case R.id.action_delete_all:
+                deleteNotes();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void deleteNotes() {
+        Toast.makeText(this,"Deleting all notes",Toast.LENGTH_LONG).show();
+        getContentResolver().delete(NotesProvider.URI,null,null);
+        restartLoader();
+    }
+
+    private void insertSampleData() {
+        insertNote("Simple note");
+        insertNote("Multi-line \n note");
+        insertNote("This is a very big line. This is a very big line.This is a very big line.This is a very big line.This is a very big line.This is a very big line.This is a very big line");
+        restartLoader();
+    }
+
+    private void restartLoader() {
+        getLoaderManager().restartLoader(0,null,this);
     }
 
     @Override
