@@ -22,7 +22,7 @@
         android:layout_toRightOf="@+id/imageDocIcon"
         android:singleLine="true"
         android:text="Dummy Text"
-        android:textColor="@color/list_item_text_color"
+        android:textColor="@color/list_item_text"
         android:textSize="18sp" />
 
 </RelativeLayout>
