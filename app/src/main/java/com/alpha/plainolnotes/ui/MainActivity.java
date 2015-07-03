@@ -1,9 +1,10 @@
-package com.alpha.plainolnotes;
+package com.alpha.plainolnotes.ui;
 
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,10 +13,12 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.alpha.plainolnotes.R;
 import com.alpha.plainolnotes.adapter.NotesCursorAdapter;
 import com.alpha.plainolnotes.db.DBOpenHelper;
 import com.alpha.plainolnotes.db.NotesProvider;
@@ -25,6 +28,7 @@ import com.alpha.plainolnotes.utils.QLog;
 public class MainActivity extends ActionBarActivity
 implements LoaderManager.LoaderCallbacks<Cursor>
 {
+    private static final int EDITOR_REQUEST_CODE = 1;
     CursorAdapter mCursorAdapter;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -32,7 +36,7 @@ implements LoaderManager.LoaderCallbacks<Cursor>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
+
         ListView listView = (ListView) findViewById(android.R.id.list);
         mCursorAdapter = new NotesCursorAdapter(this,null,0);
         listView.setAdapter(mCursorAdapter);
@@ -42,7 +46,7 @@ implements LoaderManager.LoaderCallbacks<Cursor>
 
     private void insertNote(String noteText){
         ContentValues values = new ContentValues();
-        values.put(DBOpenHelper.NOTE_TEXT,noteText);
+        values.put(DBOpenHelper.NOTE_TEXT, noteText);
 
         //getContentResolver() is like getResources
         //specify the path of the provider
@@ -55,6 +59,10 @@ implements LoaderManager.LoaderCallbacks<Cursor>
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void openEditorNote(View view){
+        startActivityForResult(new Intent(this, EditorActivity.class), EDITOR_REQUEST_CODE);
     }
 
     @Override
