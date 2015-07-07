@@ -17,6 +17,7 @@ public class NotesProvider extends ContentProvider{
     private static final String AUTHORITY = "com.alpha.plainolnotes.notesprovider"; //id of provider ->unique
     private static final String BASE_PATH = "notes"; //dataset
     public static final Uri URI = Uri.parse("content://"+AUTHORITY+"/"+BASE_PATH);
+    public static final String CONTENT_ITEM_TYPE = "note";
 
     //To identify operations
     private static final int NOTES = 1;

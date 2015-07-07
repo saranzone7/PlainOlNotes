@@ -116,4 +116,11 @@ implements LoaderManager.LoaderCallbacks<Cursor>
         QLog.d("In MainActivity: onLoaderReset");
         mCursorAdapter.swapCursor(null);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == EDITOR_REQUEST_CODE && resultCode==RESULT_OK){
+            restartLoader();
+        }
+    }
 }
