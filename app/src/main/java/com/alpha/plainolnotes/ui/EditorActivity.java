@@ -97,8 +97,8 @@ public class EditorActivity extends ActionBarActivity {
     }
 
     private void deleteNote() {
-        getContentResolver().delete(NotesProvider.URI,mNoteFilter,null);
-        Toast.makeText(this, "Note deleted", Toast.LENGTH_LONG).show();
+        getContentResolver().delete(NotesProvider.URI, mNoteFilter, null);
+        Toast.makeText(this, "Note deleted", Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
@@ -106,7 +106,7 @@ public class EditorActivity extends ActionBarActivity {
         ContentValues values = new ContentValues();
         values.put(DBOpenHelper.NOTE_TEXT, noteText);
         getContentResolver().update(NotesProvider.URI, values, mNoteFilter, null);
-        Toast.makeText(this, "Note updated", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
