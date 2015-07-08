@@ -17,7 +17,7 @@ public final class QLog {
     public static final int ALL = 5;
 
     /** Not final so it can be set at runtime */
-    public static int LOGGING_LEVEL = ALL;
+    public static int LOGGING_LEVEL = NONE;
 
     /*
      * For filtering app specific output

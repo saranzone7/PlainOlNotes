@@ -2,7 +2,6 @@ package com.alpha.plainolnotes.ui;
 
 import android.annotation.TargetApi;
 import android.app.LoaderManager;
-import android.content.ContentValues;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -11,6 +10,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
@@ -18,7 +18,6 @@ import android.widget.ListView;
 
 import com.alpha.plainolnotes.R;
 import com.alpha.plainolnotes.adapter.NotesCursorAdapter;
-import com.alpha.plainolnotes.db.DBOpenHelper;
 import com.alpha.plainolnotes.db.NotesProvider;
 import com.alpha.plainolnotes.utils.QLog;
 
@@ -44,25 +43,15 @@ implements LoaderManager.LoaderCallbacks<Cursor>
                 /*id corresponds to _id that we used in db. ContentProvider gets that and make
                 _id long id
                 */
-                Intent intent = new Intent(MainActivity.this,EditorActivity.class);
-                Uri uri = Uri.parse(NotesProvider.URI+ "/" +id);
-                intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE,uri);
+                Intent intent = new Intent(MainActivity.this, EditorActivity.class);
+                Uri uri = Uri.parse(NotesProvider.URI + "/" + id);
+                intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
             }
         });
-        getLoaderManager().initLoader(0,null,this);
+        Log.d("MainActivity","test");
+        getLoaderManager().initLoader(0, null, this);
     }
-
-    private void insertNote(String noteText){
-        ContentValues values = new ContentValues();
-        values.put(DBOpenHelper.NOTE_TEXT, noteText);
-
-        //getContentResolver() is like getResources
-        //specify the path of the provider
-        Uri noteUri = getContentResolver().insert(NotesProvider.URI, values);
-        QLog.d("Inserted note " + noteUri.getLastPathSegment());
-    }
-
 
     public void openEditorNote(View view){
         startActivityForResult(new Intent(this, EditorActivity.class), EDITOR_REQUEST_CODE);

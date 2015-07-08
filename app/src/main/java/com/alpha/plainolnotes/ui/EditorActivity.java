@@ -43,6 +43,7 @@ public class EditorActivity extends ActionBarActivity {
             mOldText = cursor.getString(cursor.getColumnIndex(DBOpenHelper.NOTE_TEXT));
             mEditor.setText(mOldText);
             mEditor.requestFocus();
+            cursor.close();
         }
     }
 

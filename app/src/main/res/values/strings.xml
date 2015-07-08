@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Plain Ol Notes</string>
-    <string name="title_activity_editor">EditorActivity</string>
-
-    <string name="hello_world">Hello world!</string>
+    <string name="app_name">Simple Notee</string>
+    <string name="title_activity_editor">Editor</string>
     <string name="action_delete">delete</string>
+    <string name="note_description">note</string>
+    <string name="enter_note">Enter note</string>
 </resources>
