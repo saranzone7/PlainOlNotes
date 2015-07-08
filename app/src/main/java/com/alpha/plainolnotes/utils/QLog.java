@@ -22,11 +22,11 @@ public final class QLog {
     /*
      * For filtering app specific output
      */
-    private static final String TAG = "PingPay";
+    private static final String TAG = "PlainOlNotes";
     /*
      * So any important logs can be outputted in non filtered output also
      */
-    private static final String TAG_GENERAL_OUTPUT = "PingPay QLog";
+    private static final String TAG_GENERAL_OUTPUT = "PlainOlNotes QLog";
 
     static {
         i("Log class reloaded");
