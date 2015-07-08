@@ -45,6 +45,10 @@ public class NotesProvider extends ContentProvider{
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         QLog.d("In NotesProvider: query");
+
+        if(uriMATCHER.match(uri)==NOTES_ID){
+            selection = DBOpenHelper.NOTE_ID+"="+uri.getLastPathSegment();
+        }
         return mDb.query(DBOpenHelper.TABLE_NOTES,DBOpenHelper.ALL_COLUMNS,selection,null,null,null,DBOpenHelper.NOTE_CREATED+" DESC");
     }
 

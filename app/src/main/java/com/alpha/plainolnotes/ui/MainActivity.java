@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -40,7 +41,18 @@ implements LoaderManager.LoaderCallbacks<Cursor>
         ListView listView = (ListView) findViewById(android.R.id.list);
         mCursorAdapter = new NotesCursorAdapter(this,null,0);
         listView.setAdapter(mCursorAdapter);
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                /*id corresponds to _id that we used in db. ContentProvider gets that and make
+                _id long id
+                */
+                Intent intent = new Intent(MainActivity.this,EditorActivity.class);
+                Uri uri = Uri.parse(NotesProvider.URI+ "/" +id);
+                intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE,uri);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+            }
+        });
         getLoaderManager().initLoader(0,null,this);
     }
 
