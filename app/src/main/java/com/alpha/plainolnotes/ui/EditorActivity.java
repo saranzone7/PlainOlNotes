@@ -49,7 +49,7 @@ public class EditorActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(mAction.equals(Intent.ACTION_EDIT)){
-            getMenuInflater().inflate(R.menu.menu_editor,menu);
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
         }
         return true;
     }
@@ -59,6 +59,9 @@ public class EditorActivity extends ActionBarActivity {
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finishEditting();
+        }else if(id == R.id.action_delete){
+            deleteNote();
+            finish();
         }
         return true;
     }
@@ -82,7 +85,7 @@ public class EditorActivity extends ActionBarActivity {
 
             case Intent.ACTION_EDIT:
                 if(TextUtils.isEmpty(inputText)){
-                    //delete notes
+                    deleteNote();
                 }else if(mOldText.equals(inputText)){
                    setResult(RESULT_CANCELED);
                 }else{
@@ -91,6 +94,12 @@ public class EditorActivity extends ActionBarActivity {
                 break;
         }
         finish();
+    }
+
+    private void deleteNote() {
+        getContentResolver().delete(NotesProvider.URI,mNoteFilter,null);
+        Toast.makeText(this, "Note deleted", Toast.LENGTH_LONG).show();
+        setResult(RESULT_OK);
     }
 
     private void updateNote(String noteText) {
@@ -107,4 +116,6 @@ public class EditorActivity extends ActionBarActivity {
         getContentResolver().insert(NotesProvider.URI, values);
         setResult(RESULT_OK);
     }
+
+
 }
