@@ -11,13 +11,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.alpha.plainolnotes.R;
 import com.alpha.plainolnotes.adapter.NotesCursorAdapter;
@@ -66,44 +63,9 @@ implements LoaderManager.LoaderCallbacks<Cursor>
         QLog.d("Inserted note " + noteUri.getLastPathSegment());
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
     public void openEditorNote(View view){
         startActivityForResult(new Intent(this, EditorActivity.class), EDITOR_REQUEST_CODE);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id){
-            case R.id.action_create_sample:
-                insertSampleData();
-                break;
-
-            case R.id.action_delete_all:
-                deleteNotes();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void deleteNotes() {
-        Toast.makeText(this,"Deleting all notes",Toast.LENGTH_LONG).show();
-        getContentResolver().delete(NotesProvider.URI,null,null);
-        restartLoader();
-    }
-
-    private void insertSampleData() {
-        insertNote("Simple note");
-        insertNote("Multi-line \n note");
-        insertNote("This is a very big line. This is a very big line.This is a very big line.This is a very big line.This is a very big line.This is a very big line.This is a very big line");
-        restartLoader();
     }
 
     private void restartLoader() {

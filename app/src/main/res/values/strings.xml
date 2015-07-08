@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">Plain Ol Notes</string>
-
-    <string name="create_sample_data">Create Sample Data</string>
-    <string name="delete_all_notes">Delete all notes</string>
     <string name="title_activity_editor">EditorActivity</string>
 
     <string name="hello_world">Hello world!</string>
